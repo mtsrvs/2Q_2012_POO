@@ -1,0 +1,81 @@
+<project
+    name="TPE"
+    basedir="."
+    default="dist" >
+
+    <!-- Compila el proyecto, deja los archivos class en el directorio bin -->
+
+    <target name="compile" >
+
+        <mkdir dir="bin" />
+
+        <javac
+            classpath="lib/junit-4.7.jar"
+            destdir="bin"
+            includeAntRuntime="false"
+            srcdir="src" />
+    </target>
+
+    <!-- Crea la documentacion en formato Javadoc, en el directorio doc. -->
+
+    <target
+        name="doc"
+        depends="compile" >
+
+        <javadoc
+            classpath="lib/junit-4.7.jar"
+            destdir="doc"
+            sourcepath="src" />
+    </target>
+
+    <!-- Ejecuta los tests. -->
+
+    <target
+        name="Test"
+        depends="compile" >
+
+        <junit>
+
+            <formatter
+                type="brief"
+                usefile="false" />
+
+            <classpath path="lib/junit-4.7.jar;bin" />
+
+            <test name="Test.TestingBoard" />
+
+            <test name="Test.TestingParser" />
+        </junit>
+    </target>
+
+    <!-- Crea el jar ejecutable con todo el proyecto compilado. -->
+
+    <target
+        name="dist"
+        depends="compile,doc, Test" >
+
+        <jar
+            basedir="bin"
+            destfile="Silverphere.jar" >
+
+            <manifest>
+
+                <attribute
+                    name="Main-Class"
+                    value="frontEnd.Main" />
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Borra todos los archivos generados luego de compilar. -->
+
+    <target name="clean" >
+
+        <delete dir="bin" />
+
+        <delete dir="doc" />
+
+        <delete file="sample.jar" />
+    </target>
+
+</project>
